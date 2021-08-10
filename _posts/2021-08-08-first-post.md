@@ -12,7 +12,18 @@ toc_sticky: true
 
 Goal
 ---
-1. 목표를 설정하기<br/>
+1. 그대와 사이 좋게 다시 보기<br/>
+    * 보고 싶다
+2. 프론트엔드를 위한 기초 다지기 (with html, css, js)<br/>
+    * tetris 만들기
+3. 동적 웹 사이트를 위한 간단한 서버 만들기 (with node.js)<br/>
+    * 간단한 discord bot 개발
+4. Unity 개발을 위한 C# 기초 다지기<br/>
+    * 휴가 나가기 3개월 전
+5. 알고리즘 공부
+    * 단계별로 풀어보기
+6. 나와서 과외할 능력 키우기
+    * python...?
 
 Schedule
 ---
@@ -21,6 +32,7 @@ Schedule
 3. 계획대로 실행한다.<br/>
 
 # html 태그 실험
+---
 <canvas id = "canvas" width = 200 height = 200></canvas>
 <script>
   var canvas = document.getElementById('canvas');
