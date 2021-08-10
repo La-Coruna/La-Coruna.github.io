@@ -16,6 +16,8 @@ Goal
     * 보고 싶다
 2. 프론트엔드를 위한 기초 다지기 (with html, css, js)<br/>
     * tetris 만들기
+        * SRS 적용
+        * multiplayer mode (battle mode) 구현
 3. 동적 웹 사이트를 위한 간단한 서버 만들기 (with node.js)<br/>
     * 간단한 discord bot 개발
 4. Unity 개발을 위한 C# 기초 다지기<br/>
