@@ -1,0 +1,189 @@
+{
+  "main": {
+    "id": "6966e6ca8789096d",
+    "type": "split",
+    "children": [
+      {
+        "id": "98b10e7f924c3076",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3c0f50b6d10ddad6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9b408d87d610294c",
+    "type": "split",
+    "children": [
+      {
+        "id": "1ac147215a160c72",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "45989921b9be0fbd",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "d88cd0e30bacfc74",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "8a8595fe84b04402",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "519af1043b88467e",
+    "type": "split",
+    "children": [
+      {
+        "id": "13c3e88f54849e2c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a6ae934272150daf",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "cae77d350f271025",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "205a917878209098",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "8bf78b671805eacc",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:퀵 스위처 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 데일리 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false
+    }
+  },
+  "active": "3c0f50b6d10ddad6",
+  "lastOpenFiles": [
+    "_site/blog/obsidian-setting-for-jekyll/index.html",
+    "_site/blog/obsidian-setting-for-jekyll",
+    "_site/blog",
+    "_posts/2024-09-02-obsidian-setting-for-jekyll.md",
+    "_site/template/post/index.html",
+    "_site/template/post",
+    "_site/template",
+    "template/post.md",
+    "template",
+    "_site/obsidian-setting-for-jekyll/index.html",
+    "_site/obsidian-setting-for-jekyll",
+    "_site/obsidian/obsidian-setting-for-jekyll/index.html",
+    "_posts/2024-03-01-First-Post.md",
+    "_site/template/post.md",
+    "_site/template/무제 파일.md",
+    "_posts/docs/2017-11-28-post-exclude-search.md",
+    "_posts/docs/2017-01-23-layout-header-video.md",
+    "_posts/docs/2016-10-06-gemified-theme-beta.md",
+    "_posts/docs/2016-09-21-gemified-theme-alpha.md",
+    "_posts/docs/2016-02-24-welcome-to-jekyll.md",
+    "_posts/docs/2013-08-16-markup-syntax-highlighting.md",
+    "_posts/docs/2013-05-22-markup-more-images.md",
+    "_posts/docs/2013-01-11-markup-html-tags-and-formatting.md",
+    "_posts/docs/2013-01-10-markup-image-alignment.md",
+    "_posts/docs/2013-01-09-markup-text-alignment.md",
+    "_posts/docs/2013-01-05-markup-title-with-special-characters.md",
+    "_posts/docs/2013-01-05-markup-title-with-markup.md",
+    "_posts/docs/2012-05-22-markup-text-readability.md",
+    "_posts/docs/2012-05-22-markup-text-readability-wide-page.md",
+    "_posts/docs/2012-03-15-layout-sidebar-nav-list.md",
+    "_posts/docs/2012-03-15-layout-sidebar-custom.md",
+    "_posts/docs/2012-03-15-layout-more-tag.md",
+    "_posts/docs/2012-03-15-layout-header-overlay-image.md",
+    "_posts/docs/2012-03-15-layout-header-overlay-image-tagline.md",
+    "_posts/docs/2012-03-15-layout-header-overlay-color.md",
+    "_site/assets/images/unsplash-image-2.jpg",
+    "_site/assets/images/unsplash-image-11.jpg",
+    "_site/assets/images/unsplash-image-10.jpg",
+    "_site/assets/images/unsplash-image-1.jpg",
+    "_site/assets/images/unsplash-gallery-image-4.jpg",
+    "_site/assets/images/unsplash-gallery-image-4-th.jpg",
+    "_site/assets/images/unsplash-gallery-image-3.jpg",
+    "_site/assets/images/unsplash-gallery-image-3-th.jpg",
+    "_site/assets/images/unsplash-gallery-image-2.jpg",
+    "_site/assets/images/unsplash-gallery-image-2-th.jpg"
+  ]
+}
