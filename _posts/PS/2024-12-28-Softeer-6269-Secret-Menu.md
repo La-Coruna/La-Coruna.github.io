@@ -9,6 +9,8 @@ tags:
   - pattern_matching
   - strstr
   - find
+toc: true
+toc_sticky: true
 ---
 # 🔗Link
 [문제](https://softeer.ai/practice/6269)  
