@@ -4,15 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "98b10e7f924c3076",
+        "id": "8be88d599d3b7ef2",
         "type": "tabs",
         "children": [
           {
-            "id": "3c0f50b6d10ddad6",
+            "id": "417cb59251497e96",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "_posts/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2024-12-29-remove-reading-time-and-add-posting-date"
             }
           }
         ]
@@ -35,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "파일 탐색기"
             }
           },
           {
@@ -50,7 +58,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "검색"
             }
           },
           {
@@ -58,7 +68,9 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
@@ -81,6 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "_posts/PS/2024-12-28-Softeer-6269-Secret-Menu.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,7 +101,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "2024-12-28-Softeer-6269-Secret-Menu의 백링크"
             }
           },
           {
@@ -97,9 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "_posts/PS/2024-12-28-Softeer-6269-Secret-Menu.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "2024-12-28-Softeer-6269-Secret-Menu의 나가는 링크"
             }
           },
           {
@@ -110,7 +128,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -118,15 +138,19 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "_posts/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date.md"
+              },
+              "icon": "lucide-list",
+              "title": "2024-12-29-remove-reading-time-and-add-posting-date 개요"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -138,52 +162,59 @@
       "command-palette:명령어 팔레트 열기": false
     }
   },
-  "active": "3c0f50b6d10ddad6",
+  "active": "417cb59251497e96",
   "lastOpenFiles": [
-    "_site/blog/obsidian-setting-for-jekyll/index.html",
-    "_site/blog/obsidian-setting-for-jekyll",
-    "_site/blog",
-    "_posts/2024-09-02-obsidian-setting-for-jekyll.md",
-    "_site/template/post/index.html",
-    "_site/template/post",
-    "_site/template",
-    "template/post.md",
-    "template",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date/set_show_date_true.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date/removed_reading_time.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date/set_read_time_false.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date/reading_time.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date/adding_show_date.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date",
+    "_posts/blog-settings/2024-09-02-obsidian-setting-for-jekyll.md",
+    "assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date/set_read_time_false.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-add-date/set_show_date_true.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-add-date/set_read_time_false.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-add-date/removed_reading_time.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-add-date/reading_time.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-add-date/adding_show_date.png",
+    "_site/assets/images/blog-settings/2024-12-29-remove-reading-time-add-date",
+    "assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date",
+    "assets/images/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date",
+    "_posts/blog-settings/2024-09-08-adding-scss-to-minimal-mistakes.md",
+    "_posts/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date.md",
+    "_posts/blog-settings/2024-09-09-Ruby-Download.md",
+    "_site/blog management/obsidian-setting-for-jekyll/index.html",
+    "_site/blog management/obsidian-setting-for-jekyll",
     "_site/obsidian-setting-for-jekyll/index.html",
     "_site/obsidian-setting-for-jekyll",
-    "_site/obsidian/obsidian-setting-for-jekyll/index.html",
+    "_site/blog management/adding-scss-to-minimal-mistakes/index.html",
+    "_site/blog management/adding-scss-to-minimal-mistakes",
+    "_posts/PS/2024-12-28-Softeer-6269-Secret-Menu.md",
+    "_posts/PS/2024-12-29-Softeer-6268-electronic-display-board.md",
+    "template/PS.md",
+    "_posts/PS/2024-09-02-PS-summary.md",
+    "_posts/2024-07--22-Thread1.md",
+    "_posts/2010-02-05-post-notice 1.md",
+    "_posts/블로그에 쓰고 싶은 기술글들.md",
+    "_posts/PS/().md",
+    "template/post copy.md",
+    "_pages/categories/PS.md",
+    "_pages/categories/category-archive-PS.md",
+    "_pages/category-archive-PS.md",
+    "_pages/category-archive copy.md",
+    "_posts/2024-10-11.md",
+    "_posts/2024-10-08-Flash.md",
+    "_posts/2024-09-24 SQL 1.md",
+    "_posts/2024-09-09-Ruby-Download.md",
+    "_posts/2024-09-05-Wheelchair-Simulator-Interface.md",
+    "_posts/2024-06-22-PS.md",
+    "_posts/2024-06-21-Unity.md",
     "_posts/2024-03-01-First-Post.md",
-    "_site/template/post.md",
-    "_site/template/무제 파일.md",
-    "_posts/docs/2017-11-28-post-exclude-search.md",
-    "_posts/docs/2017-01-23-layout-header-video.md",
-    "_posts/docs/2016-10-06-gemified-theme-beta.md",
-    "_posts/docs/2016-09-21-gemified-theme-alpha.md",
-    "_posts/docs/2016-02-24-welcome-to-jekyll.md",
-    "_posts/docs/2013-08-16-markup-syntax-highlighting.md",
-    "_posts/docs/2013-05-22-markup-more-images.md",
-    "_posts/docs/2013-01-11-markup-html-tags-and-formatting.md",
-    "_posts/docs/2013-01-10-markup-image-alignment.md",
-    "_posts/docs/2013-01-09-markup-text-alignment.md",
-    "_posts/docs/2013-01-05-markup-title-with-special-characters.md",
-    "_posts/docs/2013-01-05-markup-title-with-markup.md",
-    "_posts/docs/2012-05-22-markup-text-readability.md",
-    "_posts/docs/2012-05-22-markup-text-readability-wide-page.md",
-    "_posts/docs/2012-03-15-layout-sidebar-nav-list.md",
-    "_posts/docs/2012-03-15-layout-sidebar-custom.md",
-    "_posts/docs/2012-03-15-layout-more-tag.md",
-    "_posts/docs/2012-03-15-layout-header-overlay-image.md",
-    "_posts/docs/2012-03-15-layout-header-overlay-image-tagline.md",
-    "_posts/docs/2012-03-15-layout-header-overlay-color.md",
-    "_site/assets/images/unsplash-image-2.jpg",
-    "_site/assets/images/unsplash-image-11.jpg",
-    "_site/assets/images/unsplash-image-10.jpg",
-    "_site/assets/images/unsplash-image-1.jpg",
-    "_site/assets/images/unsplash-gallery-image-4.jpg",
-    "_site/assets/images/unsplash-gallery-image-4-th.jpg",
-    "_site/assets/images/unsplash-gallery-image-3.jpg",
-    "_site/assets/images/unsplash-gallery-image-3-th.jpg",
-    "_site/assets/images/unsplash-gallery-image-2.jpg",
-    "_site/assets/images/unsplash-gallery-image-2-th.jpg"
+    "무제 파일.canvas",
+    "_site/무제 파일.canvas",
+    "_site/무제 파일 2.canvas",
+    "무제 파일 2.canvas",
+    "무제 파일 1.canvas",
+    "_site/무제 파일 1.canvas"
   ]
 }
