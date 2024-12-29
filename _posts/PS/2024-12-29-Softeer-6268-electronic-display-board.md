@@ -9,15 +9,16 @@ tags:
 toc: true
 toc_sticky: true
 ---
-# 🔗Link
+## 🔗Link
+{:.no-top-margin}
 [문제](https://softeer.ai/practice/6268)  
 [풀이1](https://github.com/La-Coruna/PS/blob/main/softeer/21%EB%85%84%20%EC%9E%AC%EC%A7%81%EC%9E%90%20%EB%8C%80%ED%9A%8C%20%EC%98%88%EC%84%A0/6268_1.cpp)  
 [풀이2](https://github.com/La-Coruna/PS/blob/main/softeer/21%EB%85%84%20%EC%9E%AC%EC%A7%81%EC%9E%90%20%EB%8C%80%ED%9A%8C%20%EC%98%88%EC%84%A0/6268_2.cpp)  
-# 💡Idea
+## 💡Idea
 간단한 시뮬레이션 문제.  
 숫자 0~9외에 공백도 고려해야 함.
 
-# 🔑Code
+## 🔑Code
 ```c++
 #include <bits/stdc++.h>
 using namespace std;
@@ -153,6 +154,6 @@ int main(void){
 }
 ```
 
-# 🗨️ Side Notes
+## 🗨️ Side Notes
 C++에서 배열이나 객체를 선언할 때 마지막 요소 뒤에 쉼표(`,`)를 붙여도 된다.  
 C++ 초기 버전인 **C++98** 와 **C++03** 에서는 안 됐었지만 **C++11** 이후로는 가능하다.
