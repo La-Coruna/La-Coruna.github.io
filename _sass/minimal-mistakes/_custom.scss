@@ -63,3 +63,9 @@
 .my_notice {
   @include my_notice($light-gray);
 }
+
+.rounded-border {
+  border: 1px solid #777777; /* 경계선 색상 */
+  border-radius: 4px;
+  background-color: #fff;
+}
