@@ -1,13 +1,17 @@
 ---
 title: minimal mistakes에 스타일 추가하기
-categories: [Blog]
+categories:
+  - Blog Management
 comments: true
-tags: [Blog, scss]
+tags:
+  - jekyll
+  - minimal mistakes
+  - scss
 ---
-# 서론
+## 서론
 글을 쓰는 도중, 글에 박스를 치고 싶어 `{: .notice}`를 사용해보았다. 이를 사용하니 박스 안의 글씨가 작아지고, 위 아래로 마진값이 있는 것이 맘에 들지 않았다. 그래서 맘에 드는 `{: .my_notice}`를 하나 새로 만들기로 했다. 기존에 minimal mistakes의 설정을 바꾸고자 한다면, 다음 과정을 따라하면 되겠다.
 
-# 과정
+## 과정
 1. **_sass > minimal-mistakes > _custom.scss 추가**  
    ![](../../assets/images/blog-settings/adding-custom-scss.png)  
 2. **_custom.scss 원하는 설정을 작성**  
@@ -30,7 +34,7 @@ tags: [Blog, scss]
     @import "minimal-mistakes/custom";
     ```
 
-# 결과
+## 결과
 - 기존 notice  
 
     기존 notice
