@@ -126,11 +126,11 @@ std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
 - ### Minimum Spanning Tree
   - 신장 트리: 주어진 방향성이 없는 그래프의 부분 그래프들 중에서, 모든 정점을 포함하는 트리
   - 최소 신장 트리: 신장 트리들 중에서 간선 비용의 합이 최소인 트리 
-	### 1. 크루스칼 알고리즘
+	#### 1. 크루스칼 알고리즘
 	특정 두 정점이 같은 그룹인지 다른 그룹인지 알 수 있어야 함.
 	이 방법으로 2가지가 있는데, (1) Flood Fill (2) Union Find
 	Union Find를 이용하면 O(ElgE)로 구현 가능.
-	### 2. 프림 알고리즘
+	#### 2. 프림 알고리즘
 	우선순위 큐를 사용하여 구현
 - ### Floyd's Algorithm
   - 모든 정점 쌍 사이의 최단 거리를 구해주는 알고리즘
