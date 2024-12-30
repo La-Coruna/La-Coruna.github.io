@@ -7,7 +7,7 @@ tags:
 toc: true
 toc_sticky: true
 ---
-## 🔗Link {: .no-top-margin}
+## 🔗Link
 {:.no-top-margin}
 [문제]()  
 [풀이1](https://github.com/La-Coruna/PS/blob/main/)  
