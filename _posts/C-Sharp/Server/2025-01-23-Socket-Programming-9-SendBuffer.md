@@ -9,7 +9,7 @@ tags:
 toc: true
 toc_sticky: true
 ---
-**9번째 TIL: SendBuffer 클래스 도입**
+**C# Socket Programming TIL: SendBuffer 클래스 도입**
 
 ---
 
