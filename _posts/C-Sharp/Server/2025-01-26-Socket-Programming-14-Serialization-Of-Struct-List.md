@@ -1,5 +1,5 @@
 ---
-title: "[C#][Server] 13. string 변수의 직렬화"
+title: "[C#][Server] 14. struct list 변수의 직렬화"
 categories:
   - C#
   - Server
