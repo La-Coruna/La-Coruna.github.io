@@ -227,6 +227,22 @@ std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
 - ### Trie
 
 ## 구현 팁
+- ### 거듭제곱
+그냥 지수 e번만큼 반복해서 곱해주면 O(e)만큼의 연산이 필요하다.  
+다음 코드 예시와 같이 구하면, e를 비트 단위로 줄이면서 계산하므로 O(log e)의 연산만 필요하다.  
+7<sup>21</sup> = 7<sup>16</sup> × 7<sup>4</sup> × 7<sup>1</sup>로 쪼개서 계산하는 방법이다.
+```c++
+// 값이 커지는 것을 방지하고자 MOD연산을 해줬다.
+long long Pow(long long num, long long e) {
+    long long res = 1;
+    while (e > 0) {
+        if (e & 1) res = (res * num) % MOD;
+        num = (num * num) % MOD;
+        e >>= 1;
+    }
+    return res;
+}
+```
 - ### 홀수 판별
   ```cpp
   if(num & 1) cout << "홀수";
