@@ -16,7 +16,7 @@ toc_sticky: true
 옵시디언의 calendar라는 캘린더를 표시해주고, 일일 노트들과 연결해주는 플러그인이 있다.  
 단축키로 이 calendar를 열고 싶은데, 단축키를 매핑할 수 있는 항목이 없다.  
 그래서 단축키를 설정할 수 있도록 설정을 해보겠다.  
-![](../../assets/images/Obsidian/obsidian-plugin-hotkey/obsidian-plugin-hotkey-intro.png)  
+![](../../assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-intro.png)  
 위 이미지의 빨간 박스 부분이 새로 추가한 단축키 항목이다.
 
 ## 문제 이해
@@ -59,10 +59,10 @@ toc_sticky: true
 ## 결과
 - 커맨드 팔레트에 새로 추가한 커맨드를 입력한 모습이다.
 - 단축키는 `Alt` + `4`로 설정해두었다.
-	![](../../assets/images/Obsidian/obsidian-plugin-hotkey/obsidian-plugin-hotkey-result-1.png)
+	![](../../assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-result-1.png)
 
 - 단축키로 귀여운 달력이 잘 열린다.  
-	![](../../assets/images/Obsidian/obsidian-plugin-hotkey/obsidian-plugin-hotkey-result-2.png)
+	![](../../assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-result-2.png)
 
 ## 참고 자료
 - [https://docs.obsidian.md/Plugins/User+interface/Commands](https://docs.obsidian.md/Plugins/User+interface/Commands)
