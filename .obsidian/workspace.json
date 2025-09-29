@@ -11,30 +11,17 @@
             "id": "417cb59251497e96",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "assets/images/Obsidian/obsidian-plugin-hotkey/obsidian-plugin-hotkey-result-1.png"
-              },
-              "icon": "lucide-image",
-              "title": "obsidian-plugin-hotkey-result-1"
-            }
-          },
-          {
-            "id": "1d01988d2a87eae0",
-            "type": "leaf",
-            "state": {
               "type": "markdown",
               "state": {
-                "file": "_posts/obsidian/2025-09-05-obsidian-plugin-command-hotkey.md",
+                "file": "_posts/PS/2025-09-29-BOJ-9935.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-09-05-obsidian-plugin-command-hotkey"
+              "title": "2025-09-29-BOJ-9935"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -153,13 +140,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "_posts/obsidian/2025-09-05-obsidian-plugin-command-hotkey.md",
+                "file": "_posts/PS/2025-09-29-BOJ-9935.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "2025-09-05-obsidian-plugin-command-hotkey 의 개요"
+              "title": "2025-09-29-BOJ-9935 의 개요"
             }
           }
         ],
@@ -180,34 +167,45 @@
       "command-palette:명령어 팔레트 열기": false
     }
   },
-  "active": "1d01988d2a87eae0",
+  "active": "417cb59251497e96",
   "lastOpenFiles": [
+    "_site/ps/boj/BOJ-9663/index.html",
+    "_site/ps/boj/BOJ-9663",
+    "_site/ps/boj/BOJ-15686/index.html",
+    "_site/ps/boj/BOJ-15686",
+    "_site/ps/softeer/Softeer-6269-Secret-Menu/index.html",
+    "_site/ps/softeer/Softeer-6269-Secret-Menu",
+    "_site/ps/PS-summary/index.html",
+    "_site/ps/PS-summary",
+    "_posts/PS/2024-09-02-PS-summary.md",
+    "_posts/PS/2024-12-28-Softeer-6269-Secret-Menu.md",
+    "_posts/PS/2025-02-04-BOJ-15686.md",
+    "_posts/PS/2025-02-04-BOJ-9663.md",
+    "_posts/PS/2025-09-19-BOJ-2146.md",
+    "_posts/PS/2025-09-29-BOJ-9935.md",
+    "_site/ps/boj/BOJ-9935/index.html",
+    "_site/ps/boj/BOJ-9935",
+    "_site/ps/boj/BOJ-2146/index.html",
+    "_posts/TIL/Linux/2025-09-05-Linux-Admin-vol2-Apache.md",
+    "_posts/obsidian/2025-09-05-obsidian-plugin-command-hotkey.md",
+    "_site/assets/images/TIL/Linux/2025-09-05/2025-09-05-1757052956011.png",
+    "_site/assets/images/TIL/Linux/2025-09-05/2025-09-05-1757038924371.png",
+    "assets/images/TIL/Linux/2025-09-05/2025-09-05-1757052956011.png",
+    "assets/images/TIL/Linux/2025-09-05/2025-09-05-1757038924371.png",
+    "_site/assets/images/TIL/Linux/2025-09-05-1757052956011.png",
+    "_site/assets/images/TIL/Linux/2025-09-05-1757038924371.png",
+    "assets/images/TIL/Linux/2025-09-05-1757052956011.png",
+    "assets/images/TIL/Linux/2025-09-05-1757038924371.png",
+    "_posts/TIL/Linux/2025-09-05.md",
+    "_site/assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-intro.png",
+    "_posts/TIL/Linux/2025-09-02-Linux-Admin-vol2-SELinux-DNS.md",
+    "_posts/TIL/Linux/2025-09-03-Linux-Admin-vol2-NFS.md",
     "_posts/blog-settings/2024-09-02-obsidian-setting-for-jekyll.md",
     "_site/assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-result-2.png",
-    "_site/assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-result-1.png",
-    "assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-result-2.png",
-    "assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-result-1.png",
-    "assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-command-hotkey-intro.png",
-    "_site/assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-hotkey-result-2.png",
-    "_site/assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-hotkey-result-1.png",
-    "_site/assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-hotkey-intro.png",
-    "_site/assets/images/Obsidian/obsidian-plugin-command-hotkey",
-    "assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-hotkey-result-2.png",
-    "assets/images/Obsidian/obsidian-plugin-command-hotkey/obsidian-plugin-hotkey-result-1.png",
-    "assets/images/Obsidian/obsidian-plugin-command-hotkey",
-    "_site/obsidian/obsidian-plugin-command-hotkey/index.html",
-    "_site/obsidian/obsidian-plugin-command-hotkey",
     "_posts/obsidian/2025-09-05-obsidian-plugin-hotkey.md",
-    "_posts/obsidian/2025-09-05-obsidian-plugin-command-hotkey.md",
-    "_site/obsidian/obsidian-plugin-hotkey/index.html",
-    "_site/obsidian/obsidian-plugin-hotkey",
-    "_site/obsidian",
-    "_site/assets/images/Obsidian/obsidian-plugin-hotkey",
-    "_site/assets/images/Obsidian",
     "_posts/blog-settings/2024-09-08-adding-scss-to-minimal-mistakes.md",
     "_posts/blog-settings/2024-12-29-remove-reading-time-and-add-posting-date.md",
     "_posts/blog-settings/2025-01-27-mathjax-vs-katex.md",
-    "assets/images/Obsidian/obsidian-plugin-hotkey",
     "_posts/TIL/Linux/2025-09-04-Linux-Admin-vol2-iSCSI.md",
     "_posts/TIL/Linux/2025-09-04-test.md",
     "_posts/C-Sharp/Server/2025-01-11-Socket-Programming-2-Listener-And-AcceptAsync.md",
@@ -215,18 +213,8 @@
     "_posts/IT-Tips/2025-08-26-ssh-without-port-forwarding.md",
     "_posts/IT-Tips/2025-08-26-ssh-without-port-forwarding.md.md",
     "_posts/TIL/Linux/2025-09-04.md",
-    "_posts/TIL/Linux/2025-09-03-Linux-Admin-vol2-NFS.md",
     "_pages/about.md",
     "_posts/TIL/Network/2024-12-28-Softeer-6269-Secret-Menu 1.md",
-    "_posts/PS/2024-12-28-Softeer-6269-Secret-Menu.md",
-    "_posts/blog-settings/2024-09-09-Ruby-Download.md",
-    "_posts/PS/2024-12-29-Softeer-6268-electronic-display-board.md",
-    "template/PS.md",
-    "_posts/PS/2024-09-02-PS-summary.md",
-    "_posts/2024-07--22-Thread1.md",
-    "_posts/2010-02-05-post-notice 1.md",
-    "_posts/블로그에 쓰고 싶은 기술글들.md",
-    "_posts/PS/().md",
     "무제 파일.canvas",
     "_site/무제 파일.canvas",
     "_site/무제 파일 2.canvas",
