@@ -120,78 +120,120 @@ std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
 - Two Pointers
 
 ## Graph 관련
-- ### Topological sorting
-  사이클이 없는 방향 그래프에서만 올바른 위상 정렬이 존재한다.
-  - 구현 : indgree 배열, indgree가 0인 정점들의 큐
-- ### Minimum Spanning Tree
-  - 신장 트리: 주어진 방향성이 없는 그래프의 부분 그래프들 중에서, 모든 정점을 포함하는 트리
-  - 최소 신장 트리: 신장 트리들 중에서 간선 비용의 합이 최소인 트리 
-	#### 1. 크루스칼 알고리즘
-	특정 두 정점이 같은 그룹인지 다른 그룹인지 알 수 있어야 함.
-	이 방법으로 2가지가 있는데, (1) Flood Fill (2) Union Find
-	Union Find를 이용하면 O(ElgE)로 구현 가능.
-	#### 2. 프림 알고리즘
-	우선순위 큐를 사용하여 구현
-- ### Floyd's Algorithm
-  - 모든 정점 쌍 사이의 최단 거리를 구해주는 알고리즘
-  - 방향 무방향 상관 x, 음수 간선 ㄱㅊ, 음수 사이클은 문제
-  - D[s][1] + D[1][t] = s에서 1을 거쳐서 t로 가는 비용
-  - brute force로 구현 가능 (3중 for문)
+### Topological sorting
+사이클이 없는 방향 그래프에서만 올바른 위상 정렬이 존재한다.
+- 구현 : indgree 배열, indgree가 0인 정점들의 큐
 
-- ### Dijkstra's Algorithm
-  - 다익스트라 알고리즘은 하나의 시작점으로부터 다른 모든 정점까지의 최단 거리를 구하는 알고리즘
-  - 다익스트라 알고리즘은 음수의 가중치를 가지는 간선이 있으면 아예 사용을 할 수가 없다.
-  - 시작 점으로부터 거리가 가장 짧은 노드를 확정해 나가는 식으로 작동.
-  - 거리(가중치)와 이어진 정점을 저장하는 priority queue로 구현 가능.
-    ```csharp
-    #include <bits/stdc++.h>
-    using namespace std;
+---
 
-    #define X first
-    #define Y second
+### Minimum Spanning Tree
+- 신장 트리: 주어진 방향성이 없는 그래프의 부분 그래프들 중에서, 모든 정점을 포함하는 트리
+- 최소 신장 트리: 신장 트리들 중에서 간선 비용의 합이 최소인 트리 
 
-    #define INF 4'000'000
+#### 1. kruskal's Algorithm
+- 특정 두 정점이 같은 그룹인지 다른 그룹인지 알 수 있어야 함.
+- Union Find를 이용하면 O(ElgE)로 구현 가능.
 
-    int V, E, K;
-    vector<pair<int,int>> adj[20'001];
-    priority_queue< pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> > pq;
-    int d[20'001];
+#### 2. Prim's Algorithm
+- 우선순위 큐를 사용하여 구현
 
-    int main(void){
-      ios_base::sync_with_stdio(0);
-      cin.tie(0);
+---
 
-      cin >> V >> E >> K;
+### Floyd's Algorithm
+- 모든 정점 쌍 사이의 최단 거리를 구해주는 알고리즘
+- 방향 무방향 상관 x, 음수 간선 ㄱㅊ, 음수 사이클은 문제
+- D[s][1] + D[1][t] = s에서 1을 거쳐서 t로 가는 비용
+- brute force로 구현 가능 (3중 for문)
 
-      for(int i = 0; i < E; i++){
-          int u, v, w;
-          cin >> u >> v >> w;
-          adj[u].emplace_back(w,v);
-      }
-      fill(d+1, d+1+V, INF);
+---
 
-      d[K] = 0;
-      pq.push({0,K});
-      while(!pq.empty()){
-          auto cur = pq.top(); pq.pop();
-          int cur_dist = cur.X, cur_idx = cur.Y;
-          if(cur_dist != d[cur_idx]) continue;
-          for(auto e: adj[cur_idx]){
-              int nxt_dist = cur_dist + e.X, nxt_idx = e.Y;
-              if(nxt_dist >= d[nxt_idx]) continue;
-              d[nxt_idx] = nxt_dist;
-              pq.push({nxt_dist, nxt_idx});
-          }
-      }
+### Dijkstra's Algorithm
+- 다익스트라 알고리즘은 하나의 시작점으로부터 다른 모든 정점까지의 최단 거리를 구하는 알고리즘
+- 다익스트라 알고리즘은 음수의 가중치를 가지는 간선이 있으면 아예 사용을 할 수가 없다.
+- 시작 점으로부터 거리가 가장 짧은 노드를 확정해 나가는 식으로 작동.
+- 거리(가중치)와 이어진 정점을 저장하는 priority queue로 구현 가능.
+  ```csharp
+  #include <bits/stdc++.h>
+  using namespace std;
 
-      for(int i = 1; i <= V; i++){
-          if(d[i] == INF) cout << "INF\n";
-          else cout << d[i] << '\n';
-      }
-      
-      return 0;
+  #define X first
+  #define Y second
+
+  #define INF 4'000'000
+
+  int V, E, K;
+  vector<pair<int,int>> adj[20'001];
+  priority_queue< pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> > pq;
+  int d[20'001];
+
+  int main(void){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    cin >> V >> E >> K;
+
+    for(int i = 0; i < E; i++){
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].emplace_back(w,v);
     }
-    ```
+    fill(d+1, d+1+V, INF);
+
+    d[K] = 0;
+    pq.push({0,K});
+    while(!pq.empty()){
+        auto cur = pq.top(); pq.pop();
+        int cur_dist = cur.X, cur_idx = cur.Y;
+        if(cur_dist != d[cur_idx]) continue;
+        for(auto e: adj[cur_idx]){
+            int nxt_dist = cur_dist + e.X, nxt_idx = e.Y;
+            if(nxt_dist >= d[nxt_idx]) continue;
+            d[nxt_idx] = nxt_dist;
+            pq.push({nxt_dist, nxt_idx});
+        }
+    }
+
+    for(int i = 1; i <= V; i++){
+        if(d[i] == INF) cout << "INF\n";
+        else cout << d[i] << '\n';
+    }
+    
+    return 0;
+  }
+  ```
+
+---
+#### Union-Find
+- disjoint set(서로소 집합): 서로 공통된 원소를 가지고 있지 않은 두 개 이상의 집합
+- disjoint set 자료 구조를 트리를 이용해 구현하고, union과 find 기능을 제공하는 것이 목표.
+- 최적화 전략
+	1. Union by rank: Union 연산 수행 시, rank가 더 높은 쪽을 부모로 설정.
+	2. 경로 압축: Find 연산 수행 시, 자식에서 루트로 가는 경로를 압축.
+
+```c++
+int find(int x){
+    if(p[x] < 0) return x;
+    return p[x] = find(p[x]);
+}
+
+bool union_set(int u, int v){
+    u = find(u);
+    v = find(v);
+
+    if(u == v) return false;
+
+    // 랭크가 높은 쪽이 부모. (즉, p[x]가 낮은 쪽이 부모)
+    // 여기선 u가 부모가 되게 할 것임.
+    if(p[v] < p[u]) swap(u,v);
+    else if(p[u] == p[v]) p[u]--;
+
+    p[v] = u;
+    return true;
+}
+```
+
+---
+
 
 - KMP Algorithm
 - Trie Algorithm
