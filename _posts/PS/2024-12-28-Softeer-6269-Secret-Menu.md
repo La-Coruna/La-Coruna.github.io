@@ -6,7 +6,7 @@ categories:
 comments: true
 tags:
   - string
-  - pattern_matching
+  - pattern-matching
   - strstr
   - find
 toc: true

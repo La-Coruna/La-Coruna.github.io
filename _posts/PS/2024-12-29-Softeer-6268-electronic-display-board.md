@@ -5,7 +5,7 @@ categories:
   - Softeer
 comments: true
 tags:
-  - Simulation
+  - simulation
 toc: true
 toc_sticky: true
 ---

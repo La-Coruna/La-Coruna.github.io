@@ -5,8 +5,8 @@ categories:
   - BOJ
 comments: true
 tags:
-  - binary search
-  - parametric search
+  - binary-search
+  - parametric-search
 toc: true
 toc_sticky: true
 ---
