@@ -92,7 +92,6 @@ ${tagsYaml}
 toc: true
 toc_sticky: true
 ---
-
 ## 🔗Link
 {:.no-top-margin}
 [문제](${bojLink})  
@@ -101,9 +100,9 @@ toc_sticky: true
 ## 💡Idea
 
 ## 🔑Code
-\\\`\\\`\\\`c++
-\\\`\\\`\\\`
+\`\`\`c++
 
+\`\`\`
 ## 🗨️ Side Notes
 `;
 -%>
