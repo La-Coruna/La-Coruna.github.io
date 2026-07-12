@@ -1,0 +1,993 @@
+---
+layout: single
+title: "개발자 편의와 운영 통제 사이: Kubernetes 기반 애플리케이션 배포·운영 플랫폼 설계기"
+date: 2026-07-12
+permalink: /platform/kubernetes-application-platform/
+description: 개발자는 인프라의 복잡성을 덜 느끼면서도 운영자는 표준과 추적성을 유지할 수 있도록, Kubernetes 기반 애플리케이션 배포·운영 플랫폼을 설계하고 구현한 과정
+categories:
+  - Cloud
+  - Platform Engineering
+tags:
+  - Kubernetes
+  - Platform Engineering
+  - FastAPI
+  - React
+  - MariaDB
+  - Docker
+  - GKE
+  - Infrastructure Automation
+toc: true
+toc_sticky: true
+overview_gallery:
+  - image_path: /assets/images/프로젝트 목록.png
+    url: /assets/images/프로젝트 목록.png
+    alt: "Kubernetes 애플리케이션 플랫폼 프로젝트 목록 화면"
+    title: "프로젝트 목록"
+  - image_path: /assets/images/프로젝트 생성.png
+    url: /assets/images/프로젝트 생성.png
+    alt: "Kubernetes 애플리케이션 플랫폼 프로젝트 생성 화면"
+    title: "프로젝트 생성"
+failure_gallery:
+  - image_path: /assets/images/private-cloud/application-platform/imagepullbackoff-pod.png
+    url: /assets/images/private-cloud/application-platform/imagepullbackoff-pod.png
+    alt: "ImagePullBackOff 상태인 Pod 상세 화면"
+    title: "ImagePullBackOff Pod 상태"
+  - image_path: /assets/images/private-cloud/application-platform/kubernetes-events.png
+    url: /assets/images/private-cloud/application-platform/kubernetes-events.png
+    alt: "이미지 Pull 실패 원인을 보여주는 Kubernetes Event 화면"
+    title: "Kubernetes Event"
+---
+# 개발자 편의와 운영 통제 사이: Kubernetes 기반 애플리케이션 배포·운영 플랫폼
+
+애플리케이션 개발자가 Kubernetes에 서비스를 배포하려면 컨테이너 이미지만 준비해서는 부족하다.
+
+Namespace와 Deployment를 정의하고, CPU와 Memory를 설정해야 한다. 애플리케이션에 접근하려면 Service가 필요하고, 외부에 공개하려면 Ingress와 도메인도 구성해야 한다. 배포가 실패하면 Pod 상태와 Kubernetes Event를 직접 확인해야 한다.
+
+Kubernetes를 잘 아는 개발자에게는 익숙한 과정일 수 있지만, 서비스를 개발하는 모든 사람이 이런 세부사항을 직접 다루어야 할 필요가 있을까?
+
+반대로 모든 과정을 버튼 하나로 감추면 또 다른 문제가 생긴다.
+
+개발자는 편리해지지만 운영자는 리소스 이름, 격리 기준, 자원 제한, 외부 공개 정책을 통제하기 어려워진다. 자동화 내부에서 실패가 발생했을 때 사용자는 무엇이 잘못되었는지 알 수 없고, 결국 다시 플랫폼 운영자에게 문의해야 한다.
+
+이 프로젝트는 이 두 문제 사이에서 시작했다.
+
+> **개발자가 인프라의 복잡성을 덜 느끼면서도, 플랫폼 운영자는 표준과 통제 가능성을 유지하려면 어떻게 해야 할까?**
+
+이 질문을 풀기 위해 **Kubernetes 기반 애플리케이션 배포·운영 플랫폼**을 개발했다.
+
+사용자가 서비스명, 컨테이너 이미지, 필요한 자원과 외부 공개 여부를 입력하면 플랫폼이 Kubernetes 리소스를 표준 규칙에 따라 생성한다. 생성 이후에는 Pod 상태와 Event를 조회해 배포 결과와 실패 원인을 확인할 수 있고, 삭제 과정과 작업 이력도 추적할 수 있도록 했다.
+
+이 글에서는 개별 기술을 선택한 이유보다, 프로젝트를 진행하며 가장 중요하게 고민했던 세 가지 문제를 중심으로 정리한다.
+
+1. 어디까지 숨기고 무엇을 사용자에게 입력받을 것인가?
+2. 셀프서비스가 운영 표준을 무너뜨리지 않게 하려면 어떻게 해야 하는가?
+3. 편리한 자동화가 블랙박스가 되지 않게 하려면 어떻게 해야 하는가?
+
+---
+
+# 프로젝트 한눈에 보기
+
+<a href="http://portal.la-coruna.xyz/" class="btn btn--primary btn--large" target="_blank" rel="noopener noreferrer">프로젝트 직접 보기</a>
+
+{% include gallery id="overview_gallery" caption="프로젝트 목록과 생성 화면" %}
+
+![플랫폼에서 생성한 nginx 애플리케이션의 Pod 상태 예시](/assets/images/nginx%20pod%20예시.png){: .align-center width="72%"}
+*플랫폼에서 생성한 nginx 애플리케이션의 Pod 상태 예시*
+| 구분                 | 내용                                                            |
+| ------------------ | ------------------------------------------------------------- |
+| 프로젝트명              | Kubernetes 기반 애플리케이션 배포·운영 플랫폼                                |
+| 프로젝트 목표            | 개발자가 Kubernetes YAML을 직접 작성하지 않고 애플리케이션을 배포하고 운영 상태를 확인하도록 지원 |
+| 주요 사용자             | 애플리케이션 개발자, 플랫폼 운영자                                           |
+| Backend            | Python, FastAPI, SQLAlchemy                                   |
+| Frontend           | React, TypeScript, Vite                                       |
+| Database           | MariaDB                                                       |
+| Container Platform | Kubernetes, Docker                                            |
+| 개발 환경              | kind                                                          |
+| 배포 환경              | GKE                                                           |
+| 네트워크               | Service, NGINX Ingress Controller, DNS                        |
+| 핵심 기능              | 리소스 생성, Pod/Event 조회, 외부 공개, 삭제, Audit Log                    |
+| 담당 범위              | 요구사항 정의, 설계, 개발, 테스트, GKE 배포, 문서화                             |
+
+플랫폼의 주요 흐름은 다음과 같다.
+
+![](../../../assets/images/플랫폼%20주요%20흐름.png)
+
+---
+
+# 1. 프로젝트의 출발점: 배포 자동화만으로 충분한가
+
+처음에는 Kubernetes 리소스를 자동 생성하는 것이 프로젝트의 핵심이라고 생각했다.
+
+```text
+API 요청
+→ Namespace 생성
+→ Deployment 생성
+→ Service 생성
+```
+
+하지만 실제 사용자의 흐름을 생각하자 생성 기능만으로는 부족했다.
+
+개발자는 애플리케이션을 배포한 뒤 다음 질문을 하게 된다.
+
+* 배포 요청이 정상적으로 접수되었는가?
+* 실제 Pod가 실행되고 있는가?
+* 외부에서 접근할 수 있는가?
+* 실패했다면 어느 단계에서 실패했는가?
+* 필요 없어졌을 때 모든 리소스가 정리되는가?
+
+운영자에게도 다른 질문이 생긴다.
+
+* 모든 프로젝트가 동일한 이름 규칙을 따르는가?
+* 한 프로젝트가 자원을 과도하게 사용하지 않는가?
+* 어떤 리소스가 플랫폼에서 생성된 것인지 구분할 수 있는가?
+* 누가 언제 생성하고 삭제했는가?
+* DB의 상태와 Kubernetes의 실제 상태가 다르면 어떻게 확인할 것인가?
+
+따라서 이 프로젝트의 범위를 단순한 배포 자동화에서 다음 전체 생명주기로 확장했다.
+
+```text
+신청
+→ 입력 검증
+→ 표준 리소스 생성
+→ 상태 확인
+→ 실패 원인 조회
+→ 외부 접근
+→ 삭제
+→ 이력 보존
+```
+
+이 과정에서 프로젝트를 관통하는 세 가지 설계 문제가 구체화됐다.
+
+---
+
+# 2. 고민 1: 어디까지 숨기고 무엇을 사용자에게 입력받을 것인가
+
+## 모든 설정을 보여주면 플랫폼을 만드는 의미가 없다
+
+Kubernetes Deployment 하나에도 설정할 수 있는 항목은 많다.
+
+* Replica 수
+* Image
+* Port
+* Label
+* Selector
+* Resource Request와 Limit
+* Probe
+* Affinity
+* Toleration
+* Security Context
+* Update Strategy
+
+Service와 Ingress까지 포함하면 선택지는 더욱 많아진다.
+
+사용자에게 Kubernetes의 모든 설정을 입력하도록 하면 자유도는 높아진다. 그러나 사용자가 결국 YAML 대신 긴 웹 양식을 작성하게 된다면 플랫폼을 사용하는 의미가 줄어든다.
+
+반대로 모든 값을 고정하면 사용은 간단하지만 서비스마다 다른 요구를 수용할 수 없다.
+
+따라서 먼저 다음 질문에 답해야 했다.
+
+> **사용자가 표현해야 하는 것은 Kubernetes 리소스인가, 아니면 실행하려는 애플리케이션의 의도인가?**
+
+## 사용자는 인프라 구성이 아니라 실행 의도를 입력한다
+
+사용자에게 필요한 것은 Namespace나 Deployment 자체가 아니다.
+
+사용자가 표현하려는 의도는 다음에 가깝다.
+
+> 이 이미지를 staging 환경에서 실행하고 싶다. Pod는 2개가 필요하고, 일정한 CPU와 Memory를 사용하며 외부에서도 접근할 수 있어야 한다.
+
+따라서 입력값을 애플리케이션 실행 의도를 표현하는 최소 정보로 제한했다.
+
+```text
+서비스명
+실행 환경
+컨테이너 이미지
+Replica 수
+CPU Request / Limit
+Memory Request / Limit
+컨테이너 포트
+외부 공개 여부
+```
+
+반면 다음 항목은 플랫폼이 결정하도록 했다.
+
+```text
+Namespace 이름
+Deployment 이름
+Service 이름
+Ingress 이름
+Label과 Selector
+ResourceQuota 이름
+Ingress Host 규칙
+리소스 생성 순서
+삭제 순서
+```
+
+이를 표로 정리하면 다음과 같다.
+
+| 사용자가 결정하는 것     | 플랫폼이 결정하는 것      |
+| --------------- | ---------------- |
+| 어떤 서비스를 실행할지    | 리소스 이름 규칙        |
+| 어떤 이미지를 사용할지    | Namespace 구성     |
+| 몇 개의 Pod가 필요한지  | Label과 Selector  |
+| 어느 정도의 자원이 필요한지 | Service 유형       |
+| 외부 공개가 필요한지     | Ingress와 Host 규칙 |
+| 어느 환경에 배포할지     | 리소스 생성·삭제 순서     |
+
+## 입력을 줄이는 것이 아니라 책임을 재배치했다
+
+사용자 입력을 줄이는 목적은 단순히 화면을 간단하게 만드는 것이 아니었다.
+
+Kubernetes 리소스 구조와 운영 규칙을 플랫폼의 책임으로 이동시킨 것이다.
+
+```text
+사용자 요청
+“demo-api를 staging 환경에 배포하고 싶다.”
+
+플랫폼 해석
+- Namespace: demo-api-staging
+- Deployment: demo-api-deployment
+- Service: demo-api-service
+- Ingress: demo-api-ingress
+- Replica: 2
+- 공통 Label 적용
+- ResourceQuota 적용
+```
+
+이 구조를 통해 사용자는 자신의 애플리케이션에 필요한 값에 집중하고, 플랫폼은 인프라 구현 방식을 일관되게 관리할 수 있다.
+
+## 추상화에는 탈출구도 필요하다
+
+모든 사용자에게 동일한 고정값만 강제하면 실제 활용도가 떨어질 수 있다.
+
+그래서 다음 값은 기본값을 제공하되 사용자가 변경할 수 있도록 했다.
+
+* Replica 수
+* CPU Request와 Limit
+* Memory Request와 Limit
+* Container Port
+* 외부 공개 여부
+
+반면 리소스 이름과 Label처럼 운영 추적에 필요한 규칙은 사용자가 변경할 수 없게 했다.
+
+이를 통해 다음 기준을 세웠다.
+
+> 서비스 특성에 따라 달라질 수 있는 값은 입력받고, 조직 전체에서 일관되어야 하는 값은 플랫폼이 관리한다.
+
+이것이 이 프로젝트에서 설정한 첫 번째 추상화 경계였다.
+
+---
+
+# 3. 고민 2: 셀프서비스가 운영 표준을 무너뜨리지 않게 하려면 어떻게 해야 하는가
+
+## 셀프서비스는 무제한 권한 제공이 아니다
+
+개발자가 Kubernetes API에 직접 접근할 수 있다면 원하는 리소스를 자유롭게 만들 수 있다.
+
+그러나 이런 방식은 장기적으로 다음 문제를 만들 수 있다.
+
+```text
+team-a-service
+team_a_service
+TeamA-Service
+service-staging
+staging-service
+```
+
+리소스 이름만 달라지는 것이 아니다.
+
+* 팀마다 다른 Label 사용
+* Resource Request와 Limit 누락
+* Service Selector 불일치
+* 외부 공개가 필요하지 않은 서비스까지 노출
+* 프로젝트 소유자를 알 수 없는 리소스 생성
+* 삭제 대상과 유지 대상 구분 어려움
+
+셀프서비스를 단순히 사용자가 직접 모든 것을 할 수 있게 만드는 것으로 이해하면, 편의성은 높아지지만 운영 통제는 약해진다.
+
+따라서 이 프로젝트에서는 셀프서비스를 다음과 같이 정의했다.
+
+> **사용자가 필요한 자원을 스스로 요청할 수 있지만, 실제 생성은 플랫폼의 규칙과 제한 안에서 이루어지는 것.**
+
+## 플랫폼이 Guardrail을 제공하도록 설계했다
+
+사용자에게 Kubernetes 리소스 생성 권한을 직접 주는 대신, 플랫폼이 요청을 받아 리소스를 생성한다.
+
+이 과정에서 다음 운영 규칙을 자동으로 적용했다.
+
+### 프로젝트별 Namespace
+
+서비스명과 환경을 조합해 Namespace를 생성했다.
+
+```text
+{service-name}-{environment}
+```
+
+예시:
+
+```text
+demo-api-staging
+order-api-dev
+movie-service-prod
+```
+
+이를 통해 서비스와 환경 단위로 리소스를 격리하고, 조회와 삭제 범위도 명확하게 만들었다.
+
+### 공통 Naming Convention
+
+리소스 이름은 플랫폼이 예측 가능한 규칙으로 생성한다.
+
+```text
+Namespace       demo-api-staging
+Deployment      demo-api-deployment
+Service         demo-api-service
+Ingress         demo-api-ingress
+ResourceQuota   demo-api-quota
+```
+
+### 공통 Label
+
+모든 리소스에는 프로젝트와 플랫폼 관리 여부를 식별할 수 있는 Label을 적용했다.
+
+```yaml
+app.kubernetes.io/managed-by: application-platform
+app.kubernetes.io/name: demo-api
+app.kubernetes.io/instance: demo-api-staging
+platform.local/project-id: "1"
+platform.local/environment: staging
+```
+
+Label은 단순한 메타데이터가 아니었다.
+
+* Service와 Pod 연결
+* 프로젝트 리소스 조회
+* 플랫폼 관리 대상 식별
+* 삭제 대상 검증
+* DB 프로젝트와 Kubernetes 리소스 연결
+
+에 활용했다.
+
+### ResourceQuota
+
+사용자가 입력한 CPU와 Memory 값만으로는 Namespace 전체의 자원 소비를 통제할 수 없다.
+
+따라서 Namespace에 ResourceQuota를 적용해 프로젝트 전체가 사용할 수 있는 자원의 상한을 설정했다.
+
+```text
+컨테이너 Request / Limit
+= 개별 컨테이너의 자원 요청과 제한
+
+ResourceQuota
+= Namespace 전체의 자원 사용 상한
+```
+
+### 외부 공개 정책
+
+모든 Service를 외부에 공개하지 않았다.
+
+Service는 `ClusterIP`로 생성하고, 사용자가 외부 공개를 선택한 경우에만 Ingress를 생성했다.
+
+```text
+expose_external = false
+→ Cluster 내부에서만 접근
+
+expose_external = true
+→ Ingress 생성 및 외부 Host 제공
+```
+
+## 편의성과 통제는 반대 개념이 아니었다
+
+처음에는 사용자의 자유를 제한하면 편의성도 줄어든다고 생각할 수 있었다.
+
+그러나 반복적으로 필요한 규칙을 플랫폼이 대신 적용하면 사용자는 오히려 더 적은 판단으로 안전한 결과를 얻을 수 있다.
+
+```text
+사용자 편의
+- YAML 작성 불필요
+- 리소스 간 연결 규칙을 알 필요 없음
+- 이름 규칙을 직접 관리할 필요 없음
+
+운영 통제
+- 동일한 Naming Convention
+- 공통 Label
+- ResourceQuota
+- 외부 공개 정책
+- 추적 가능한 리소스
+```
+
+즉, 플랫폼의 역할은 사용자에게 모든 선택지를 제공하는 것이 아니라 **안전한 선택 경로를 제공하는 것**이라고 판단했다.
+
+---
+
+# 4. 고민 3: 편리한 자동화가 블랙박스가 되지 않게 하려면 어떻게 해야 하는가
+
+## API가 성공했다고 배포가 성공한 것은 아니다
+
+Kubernetes API가 Deployment 생성을 수락했다고 해서 애플리케이션이 정상적으로 실행된 것은 아니다.
+
+다음 요청은 모두 HTTP 수준에서는 정상적으로 처리될 수 있다.
+
+```text
+Namespace 생성 성공
+Deployment 생성 성공
+Service 생성 성공
+```
+
+그 이후 Pod에서는 다음 문제가 발생할 수 있다.
+
+* 존재하지 않는 이미지
+* Private Registry 인증 실패
+* ResourceQuota 초과
+* Container 실행 실패
+* 잘못된 Port
+* Readiness 실패
+* Node 자원 부족
+
+따라서 `POST /projects`가 성공했다는 사실만 사용자에게 보여주면 자동화가 블랙박스가 된다.
+
+사용자는 버튼을 눌렀지만 실제로 애플리케이션이 실행되었는지 알 수 없다.
+
+## Pod Phase만으로도 충분하지 않았다
+
+Pod의 상태가 `Pending`이라고 표시되더라도 그 이유는 여러 가지일 수 있다.
+
+```text
+Pending
+├── 이미지 다운로드 중
+├── ImagePullBackOff
+├── 스케줄링 대기
+├── ResourceQuota 초과
+└── Volume 연결 대기
+```
+
+따라서 다음 정보를 함께 조회했다.
+
+* Pod Phase
+* Ready 여부
+* Container State
+* Waiting Reason
+* Restart Count
+* Node
+* Pod IP
+* Kubernetes Event
+
+## 실패 시나리오를 일부러 만들었다
+
+정상 이미지인 `nginx:latest`만 테스트하면 성공 경로만 확인할 수 있다.
+
+따라서 존재하지 않는 이미지를 입력해 실패 상황을 재현했다.
+
+```text
+nginx-not-exist:latest
+```
+
+Pod는 다음 상태를 거쳤다.
+
+```text
+Deployment 생성
+→ Pod 생성
+→ 이미지 Pull 시도
+→ ErrImagePull
+→ 반복 재시도
+→ ImagePullBackOff
+```
+
+플랫폼에서는 다음 정보를 확인할 수 있도록 했다.
+
+```text
+Pod Phase       Pending
+Ready           false
+Container State waiting
+Waiting Reason  ImagePullBackOff
+Event Reason    Failed
+Event Message   Failed to pull image
+```
+
+{% include figure image_path="/assets/images/private-cloud/application-platform/project-failure.png" alt="존재하지 않는 이미지로 생성한 실패 프로젝트 상세 화면" caption="존재하지 않는 컨테이너 이미지로 생성한 프로젝트" %}
+
+{% include gallery id="failure_gallery" caption="ImagePullBackOff 상태와 Kubernetes Event에서 확인한 실패 원인" %}
+
+이를 통해 사용자는 단순히 “배포 실패”라는 결과가 아니라, 다음 행동을 판단할 수 있는 정보를 얻는다.
+
+```text
+이미지를 가져오지 못했습니다.
+- 이미지 Repository 이름을 확인하세요.
+- Tag가 존재하는지 확인하세요.
+- Private Registry 인증이 필요한지 확인하세요.
+```
+
+## Kubernetes의 실제 상태와 플랫폼 상태를 분리했다
+
+Kubernetes에는 Pod와 Deployment의 실제 상태가 있다.
+
+플랫폼 DB에는 사용자의 요청과 업무 생명주기 상태가 있다.
+
+```text
+플랫폼 상태
+REQUESTED
+PROVISIONING
+RUNNING
+FAILED
+DELETING
+DELETED
+
+Kubernetes 상태
+Pending
+Running
+ImagePullBackOff
+CrashLoopBackOff
+Terminated
+```
+
+두 상태는 같지 않다.
+
+예를 들어 프로젝트가 `PROVISIONING`인 동안 Pod는 `Pending`일 수 있다. 모든 Pod가 Ready가 되면 플랫폼 상태를 `RUNNING`으로 변경할 수 있다. `ImagePullBackOff`가 확인되면 `FAILED`로 판단할 수 있다.
+
+```text
+Kubernetes 상태 조회
+→ Pod와 Container 상태 분석
+→ 플랫폼 상태 판단
+→ DB 상태 변경
+→ 상태 이력 저장
+```
+
+## 생성뿐 아니라 삭제와 이력까지 보여주었다
+
+자동화가 투명하려면 생성 이후의 과정도 확인할 수 있어야 한다.
+
+프로젝트 삭제 시 다음 리소스를 정리한다.
+
+```text
+Ingress
+→ Service
+→ Deployment
+→ ResourceQuota
+→ Namespace
+```
+
+삭제 후 DB 레코드를 완전히 제거하지 않고 상태를 `DELETED`로 변경했다.
+
+또한 다음 작업을 Audit Log에 기록했다.
+
+* 프로젝트 생성
+* Namespace 생성
+* Deployment 생성
+* Service 생성
+* Ingress 생성
+* 상태 변경
+* 오류 발생
+* 프로젝트 삭제
+
+```text
+누가 무엇을 요청했는가
+→ 어떤 리소스가 생성되었는가
+→ 결과가 성공했는가
+→ 언제 삭제되었는가
+```
+
+이력까지 남김으로써 자동화를 단순히 편리한 기능이 아니라 추적 가능한 운영 과정으로 만들고자 했다.
+
+프로젝트 요구사항 역시 정상 배포뿐 아니라 실패 원인 확인, 리소스 삭제, Audit Log를 핵심 사용자 시나리오로 정의하고 있다.
+
+---
+
+# 5. 세 가지 고민을 시스템 구조로 연결하기
+
+세 가지 고민은 각각 독립된 기능이 아니라 전체 아키텍처에 반영됐다.
+
+```text
+1. 사용자의 의도만 입력받는다.
+            |
+            v
+React 프로젝트 생성 화면
+            |
+            v
+2. 플랫폼 규칙을 적용한다.
+            |
+            v
+FastAPI 입력 검증 및 Kubernetes 리소스 생성
+            |
+            v
+Namespace / Quota / Deployment / Service / Ingress
+            |
+            v
+3. 결과와 실패를 다시 사용자에게 보여준다.
+            |
+            v
+Pod / Event 조회, 상태 이력, Audit Log
+```
+
+## React Dashboard
+
+사용자가 애플리케이션 실행에 필요한 값만 입력하도록 화면을 구성했다.
+
+주요 화면은 다음과 같다.
+
+* 프로젝트 목록
+* 프로젝트 생성
+* 프로젝트 상세
+* Pod 상태
+* Kubernetes Event
+* 삭제 결과
+* Audit Log
+
+## FastAPI Backend
+
+FastAPI는 단순 CRUD 서버가 아니라 사용자 요청과 Kubernetes 사이의 제어 계층으로 동작한다.
+
+주요 책임은 다음과 같다.
+
+* 입력 검증
+* Naming Convention 적용
+* 프로젝트 상태 관리
+* Kubernetes 리소스 생성
+* Pod와 Event 조회
+* 오류 변환
+* 리소스 삭제
+* Audit Log 저장
+
+## MariaDB
+
+DB에는 Kubernetes의 현재 상태만으로 알 수 없는 정보를 저장한다.
+
+* 사용자가 요청한 값
+* 프로젝트 현재 상태
+* 상태 변경 이력
+* 생성된 Kubernetes 리소스 메타데이터
+* 최근 오류
+* 생성·삭제 Audit Log
+
+DB 모델은 프로젝트, 상태 이력, Kubernetes 리소스 메타데이터, Audit Log를 분리해 생명주기를 추적하도록 설계했다.
+
+## Kubernetes
+
+Kubernetes는 실제 애플리케이션을 실행한다.
+
+* Namespace를 통한 격리
+* ResourceQuota를 통한 자원 제한
+* Deployment를 통한 Pod 관리
+* Service를 통한 내부 접근
+* Ingress를 통한 외부 접근
+* Pod와 Event를 통한 실행 상태 제공
+
+---
+
+# 6. 구현 흐름
+
+## 프로젝트 생성
+
+```text
+1. 사용자가 서비스 정보를 입력한다.
+2. FastAPI가 입력값을 검증한다.
+3. MariaDB에 프로젝트를 REQUESTED 상태로 저장한다.
+4. Namespace를 생성한다.
+5. ResourceQuota를 생성한다.
+6. Deployment를 생성한다.
+7. Service를 생성한다.
+8. 외부 공개 요청이면 Ingress를 생성한다.
+9. 생성된 리소스 정보를 DB에 저장한다.
+10. Audit Log를 기록한다.
+```
+
+## 상태 조회
+
+```text
+1. 사용자가 프로젝트 상세 화면에 접근한다.
+2. DB에서 신청 정보와 플랫폼 상태를 조회한다.
+3. Kubernetes API에서 Pod를 조회한다.
+4. Container State와 Waiting Reason을 분석한다.
+5. Namespace의 최근 Event를 조회한다.
+6. 결과를 프로젝트 상세 화면에 표시한다.
+```
+
+## 삭제
+
+```text
+1. 사용자가 프로젝트 삭제를 요청한다.
+2. 프로젝트 상태를 DELETING으로 변경한다.
+3. 플랫폼이 생성한 리소스인지 Label로 확인한다.
+4. Ingress부터 Namespace까지 순차적으로 삭제한다.
+5. 프로젝트 상태를 DELETED로 변경한다.
+6. 삭제 시각과 Audit Log를 저장한다.
+```
+
+---
+
+# 7. 로컬에서 검증한 뒤 GKE로 확장하기
+
+Kubernetes 연동 기능을 개발할 때마다 클라우드 환경을 사용하면 반복 테스트가 느리고 비용이 발생할 수 있다.
+
+따라서 개발 초기에는 Docker 위에 kind 클러스터를 구성했다.
+
+```text
+Local Machine
+├── Docker Desktop
+│   ├── MariaDB
+│   └── kind Kubernetes Cluster
+├── FastAPI
+└── React
+```
+
+kind 환경에서는 다음을 실제로 검증했다.
+
+* Namespace 생성
+* Deployment와 Pod 생성
+* Service 연결
+* ResourceQuota 적용
+* Ingress 생성
+* Pod 상태 조회
+* ImagePullBackOff 재현
+* Kubernetes Event 조회
+* 리소스 삭제
+
+로컬에서 기능을 검증한 뒤 플랫폼 자체를 GKE에 배포했다.
+
+```text
+External User
+      |
+      v
+Portal Domain
+      |
+      v
+GKE Ingress
+      |
+      v
+Frontend / Backend
+      |
+      v
+GKE Kubernetes API
+      |
+      v
+사용자 애플리케이션 Namespace
+```
+
+이를 통해 플랫폼 화면뿐 아니라 플랫폼을 통해 생성된 애플리케이션도 Ingress와 도메인을 통해 외부에서 접근할 수 있도록 구성했다.
+
+<!-- 이미지 삽입: GKE에서 실행 중인 플랫폼 화면 -->
+
+<!-- 이미지 삽입: 플랫폼을 통해 생성한 nginx 애플리케이션 -->
+
+{% include figure image_path="/assets/images/private-cloud/application-platform/gke-resources.png" alt="kubectl로 조회한 GKE Namespace, Pod, Service, Ingress 리소스" caption="GKE에서 조회한 플랫폼 및 사용자 애플리케이션 리소스" %}
+
+로컬 개발환경은 kind에서 정상·실패·삭제 시나리오를 반복 검증할 수 있도록 구성했다.
+
+---
+
+# 8. 검증한 시나리오
+
+## 정상 배포
+
+```text
+입력 이미지: nginx:latest
+Replica: 1
+외부 공개: true
+```
+
+확인한 결과:
+
+* Namespace 생성
+* ResourceQuota 생성
+* Deployment 생성
+* Pod Running
+* Container Ready
+* Service 생성
+* Ingress 생성
+* 외부 도메인 접근 성공
+
+## 실패 배포
+
+```text
+입력 이미지: 존재하지 않는 이미지
+```
+
+확인한 결과:
+
+* Deployment와 Pod 생성
+* Pod Pending
+* Container Waiting
+* ImagePullBackOff 확인
+* Kubernetes Event에서 이미지 Pull 실패 원인 확인
+* 플랫폼 화면에서 실패 정보 조회
+
+## 삭제
+
+확인한 결과:
+
+* 관련 Kubernetes 리소스 정리
+* 프로젝트 상태 `DELETED` 반영
+* 삭제 시각 보존
+* Audit Log 기록
+* 중복 삭제 요청 방지
+
+## 상태 추적
+
+확인한 결과:
+
+* 신청 정보와 실제 Kubernetes 상태 분리
+* Pod와 Event 정보 조회
+* 프로젝트 상태 변화 저장
+* 생성·실패·삭제 이력 확인
+
+---
+
+# 9. 기술 선택보다 중요했던 것
+
+이 프로젝트에는 여러 기술적 선택이 있었다.
+
+* FastAPI를 이용한 API 서버
+* Kubernetes Python Client
+* MariaDB
+* React와 TypeScript
+* Docker와 kind
+* NGINX Ingress Controller
+* GKE
+
+그러나 프로젝트를 진행하며 기술 선택보다 중요했던 것은 다음 질문이었다.
+
+```text
+어떤 정보를 사용자에게 요구할 것인가?
+어떤 규칙을 플랫폼이 대신 결정할 것인가?
+실패했을 때 무엇을 보여줄 것인가?
+생성과 삭제 과정을 어떻게 추적할 것인가?
+```
+
+같은 Kubernetes Python Client를 사용하더라도 사용자와 운영자의 문제를 정의하지 못하면 단순 리소스 생성 도구에 머무를 수 있다.
+
+반대로 이 경계를 먼저 정의하면 각 기술의 역할도 분명해진다.
+
+```text
+React
+→ 사용자의 실행 의도를 입력받는다.
+
+FastAPI
+→ 의도를 검증하고 플랫폼 정책으로 변환한다.
+
+Kubernetes
+→ 표준화된 리소스로 애플리케이션을 실행한다.
+
+MariaDB
+→ 요청, 상태, 오류와 이력을 보존한다.
+```
+
+---
+
+# 10. 현재 구조의 한계
+
+이 프로젝트는 애플리케이션 배포·운영의 핵심 흐름을 검증하기 위한 MVP다.
+
+실제 조직에서 사용하려면 다음 기능이 추가로 필요하다.
+
+## 인증과 권한
+
+현재보다 사용자와 팀을 명확히 구분하고, 프로젝트별 조회·생성·삭제 권한을 적용해야 한다.
+
+Kubernetes 접근도 운영 환경에서는 ServiceAccount와 RBAC 최소 권한으로 제한해야 한다.
+
+## 비동기 Provisioning
+
+현재 구조보다 규모가 커지면 HTTP 요청 안에서 모든 리소스를 생성하는 대신 작업 Queue와 Worker를 이용해 비동기로 처리하는 것이 적합하다.
+
+```text
+생성 요청
+→ REQUESTED 저장
+→ Queue 등록
+→ Worker Provisioning
+→ 상태 갱신
+```
+
+## Reconciliation
+
+DB의 목표 상태와 Kubernetes의 실제 상태가 달라질 수 있다.
+
+주기적으로 두 상태를 비교하고 누락되거나 변경된 리소스를 감지하는 Reconciliation 과정이 필요하다.
+
+## GitOps
+
+현재는 FastAPI가 Kubernetes API에 직접 리소스를 반영한다.
+
+운영 환경에서는 Helm Values를 Git에 저장하고 ArgoCD가 반영하는 구조로 확장할 수 있다.
+
+```text
+사용자 요청
+→ FastAPI
+→ Helm Values 생성
+→ Git Commit
+→ ArgoCD Sync
+→ Kubernetes 반영
+```
+
+이를 통해 변경 이력, Diff, Rollback과 Drift 감지를 강화할 수 있다.
+
+## 관측성
+
+Provisioning 소요 시간, 실패율, 오류 유형과 API 상태를 수집하기 위해 Prometheus, Grafana와 중앙 로그 시스템을 연결할 수 있다.
+
+현재 구현한 Direct Apply와 향후 GitOps 확장 구조는 아키텍처 단계에서 명확히 분리했다.
+
+---
+
+# 11. 프로젝트를 통해 배운 점
+
+## 플랫폼은 복잡성을 없애는 것이 아니라 적절히 배치한다
+
+Kubernetes의 복잡성이 사라진 것은 아니다.
+
+사용자가 직접 처리하던 Naming, Label, Selector, Quota와 리소스 생성 순서를 플랫폼이 책임지게 된 것이다.
+
+좋은 플랫폼은 복잡성을 무조건 숨기는 것이 아니라, 사용자가 알 필요 없는 복잡성은 내부에서 처리하고 필요한 상태는 다시 사용자에게 전달해야 한다.
+
+## 셀프서비스와 통제는 함께 설계할 수 있다
+
+사용자의 자유와 운영자의 통제가 반드시 반대되는 것은 아니었다.
+
+플랫폼이 안전한 기본값과 제한을 제공하면 사용자는 더 적은 실수로 빠르게 작업할 수 있고, 운영자는 일관된 리소스를 관리할 수 있다.
+
+## 정상 경로보다 실패 경로가 더 중요했다
+
+정상적인 이미지를 배포하는 기능만으로는 플랫폼의 운영 가치를 검증하기 어려웠다.
+
+잘못된 이미지, 중복 요청, 삭제와 같은 실패·예외 흐름을 구현하면서 상태 관리와 관측성의 중요성을 배울 수 있었다.
+
+## 생성 기능보다 생명주기 관리가 더 넓은 문제였다
+
+처음에는 Kubernetes 리소스를 만드는 코드가 가장 중요하다고 생각했다.
+
+하지만 실제로 더 많은 고민이 필요했던 부분은 다음이었다.
+
+```text
+요청을 어떻게 검증할 것인가
+→ 생성 상태를 어떻게 표현할 것인가
+→ 실패를 어떻게 설명할 것인가
+→ 어떤 리소스만 삭제할 것인가
+→ 삭제 이후 이력을 어떻게 보존할 것인가
+```
+
+이를 통해 플랫폼 개발은 인프라 명령을 대신 실행하는 것이 아니라, **사용자의 의도를 안전한 시스템 동작으로 변환하고 그 결과를 끝까지 관리하는 일**이라는 점을 배웠다.
+
+---
+
+# 12. 마치며
+
+Kubernetes 기반 애플리케이션 배포·운영 플랫폼은 다음 질문에서 출발했다.
+
+> 개발자가 Kubernetes의 모든 세부사항을 직접 다루지 않고도 애플리케이션을 배포할 수 있을까?
+
+그러나 프로젝트를 진행하며 질문은 다음과 같이 확장됐다.
+
+> 개발자에게 편리한 경험을 제공하면서, 운영 표준과 실패에 대한 가시성까지 함께 보장할 수 있을까?
+
+이 질문에 답하기 위해 세 가지 원칙을 세웠다.
+
+```text
+1. 사용자는 인프라가 아니라 애플리케이션 실행 의도를 입력한다.
+2. 플랫폼은 Naming, 격리, 자원과 네트워크 정책을 표준화한다.
+3. 복잡성은 숨기되 상태와 실패 원인까지 숨기지는 않는다.
+```
+
+이 원칙을 바탕으로 신청부터 생성, 상태 확인, 실패 분석, 외부 공개, 삭제와 이력 보존까지 하나의 흐름으로 구현했다.
+
+완성된 상용 플랫폼과 비교하면 인증, 멀티 클러스터, Reconciliation, GitOps와 관측성 등 보완할 부분이 남아 있다.
+
+그럼에도 이번 프로젝트를 통해 Kubernetes를 사용하는 경험을 넘어, 복잡한 인프라를 개발자가 반복해서 사용할 수 있는 제품 인터페이스로 바꾸는 과정을 경험할 수 있었다.
+
+> **플랫폼 개발은 명령을 대신 실행하는 일이 아니라, 사용자 편의와 운영 통제 사이의 경계를 설계하는 일이다.**
+
+---
+
+# 프로젝트 링크
+
+* 서비스: `[배포된 서비스 주소]`
+* GitHub: `[GitHub 저장소 주소]`
+* README: `[README 주소]`
+* 아키텍처 문서: `[Architecture 문서 주소]`
+* API 명세: `[API Spec 주소]`
+* DB 설계: `[DB Model 주소]`
+* Kubernetes 리소스 설계: `[Resource Design 주소]`
+
+# 함께 보면 좋은 글
+
+1. FastAPI와 Kubernetes Python Client로 리소스 생성하기
+2. Namespace부터 Ingress까지 Kubernetes 리소스 설계
+3. Pod 상태와 Event로 ImagePullBackOff 분석하기
+4. MariaDB로 프로젝트 상태와 Audit Log 관리하기
+5. kind에서 개발한 플랫폼을 GKE에 배포하기
