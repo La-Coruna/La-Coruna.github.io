@@ -41,6 +41,9 @@ failure_scenario_gallery:
     alt: "컨테이너가 반복 종료되어 CrashLoopBackOff가 발생한 프로젝트 상세 화면"
     title: "컨테이너 실행 실패: CrashLoopBackOff"
 ---
+## 공지
+현재 이용 중이던 GCP 무료 평가판 기간이 종료된 것을 확인했습니다. 8월7일 기준 1~2일 내에 서비스 복구를 하겠습니다.
+
 <style>
 .portfolio-link-panel {
   position: relative;
