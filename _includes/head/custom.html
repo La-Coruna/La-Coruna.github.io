@@ -12,3 +12,9 @@
 <meta name="theme-color" content="#ffffff">
 
 <!-- end custom head snippets -->
+{% if page.portfolio %}
+<link rel="stylesheet" href="{{ '/assets/css/portfolio.css' | relative_url }}">
+{% if page.portfolio_project %}
+<script type="module" src="{{ '/assets/js/portfolio-mermaid.js' | relative_url }}"></script>
+{% endif %}
+{% endif %}

@@ -1,0 +1,16 @@
+---
+layout: single
+---
+<nav class="portfolio-back" aria-label="포트폴리오 탐색">
+  <a href="{{ '/portfolio/' | relative_url }}">← 포트폴리오 목록</a>
+</nav>
+<div class="portfolio-meta"><span>{{ page.period | escape }}</span><span>{{ page.type | escape }}</span></div>
+<ul class="portfolio-tech" aria-label="사용 기술">
+  {% for technology in page.tech %}<li>{{ technology | escape }}</li>{% endfor %}
+</ul>
+
+{{ content }}
+
+<nav class="portfolio-back portfolio-back--bottom" aria-label="다른 프로젝트 탐색">
+  <a href="{{ '/portfolio/' | relative_url }}">← 다른 프로젝트 살펴보기</a>
+</nav>

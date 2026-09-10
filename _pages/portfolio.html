@@ -1,0 +1,27 @@
+---
+title: "프로젝트 포트폴리오"
+permalink: /portfolio/
+description: "AI 서비스 구현, 검색 품질 평가, Kubernetes 배포·운영 플랫폼 프로젝트를 소개합니다."
+layout: single
+classes: portfolio-index
+author_profile: false
+portfolio: true
+---
+<p class="portfolio-intro">AI를 서비스로 연결하고, 검색 품질을 측정하고, 배포와 운영의 흐름을 만듭니다.<br> 각 프로젝트에서 해결한 문제와 기술적 판단, 구현·검증 과정을 정리했습니다.</p>
+
+{% assign projects = site.pages | where: 'portfolio_project', true | sort: 'portfolio_order' %}
+<div class="portfolio-grid">
+  {% for project in projects %}
+  <article class="portfolio-card">
+    <p class="portfolio-card__area">{{ project.portfolio_area | escape }}</p>
+    <h2><a href="{{ project.url | relative_url }}">{{ project.title | escape }}</a></h2>
+    <p class="portfolio-card__meta">{{ project.period | escape }}<br>{{ project.type | escape }}</p>
+    <p class="portfolio-card__summary">{{ project.description | escape }}</p>
+    <p class="portfolio-card__focus">{{ project.portfolio_focus | escape }}</p>
+    <ul class="portfolio-tech" aria-label="주요 기술">
+      {% for technology in project.card_tech %}<li>{{ technology | escape }}</li>{% endfor %}
+    </ul>
+    <a class="portfolio-card__link" href="{{ project.url | relative_url }}" aria-label="{{ project.title | escape }} 상세 포트폴리오 보기">상세 포트폴리오 보기 <span aria-hidden="true">→</span></a>
+  </article>
+  {% endfor %}
+</div>

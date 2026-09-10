@@ -4,6 +4,8 @@ main:
     url: "/"
   - title: "Introduce"
     url: /about/
+  - title: "Portfolio"
+    url: /portfolio/
   - title: "Category"
     url: "/categories/"
     children:
