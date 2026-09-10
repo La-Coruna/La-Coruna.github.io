@@ -1,5 +1,5 @@
 ---
-title: "볼래말래"
+title: "볼래?말래! - AI 영화 추천 서비스"
 period: '2026.01 ~ 2026.03'
 type: 팀 프로젝트 · Backend / DevOps
 format: compact
@@ -17,7 +17,7 @@ permalink: /portfolio/bolrea-malrea/
 description: "취향을 자연어로 입력하면 영화와 추천 이유를 보여주는 서비스로, 검색 구조 제안과 FastAPI 통합·배포를 담당했습니다."
 portfolio: true
 portfolio_project: true
-portfolio_order: 3
+portfolio_order: 1
 portfolio_area: "LLM APPLICATION · BACKEND"
 portfolio_focus: "Hybrid Retrieval 구조 제안 · 추천 API 통합 · AWS 배포 흐름"
 card_tech: [Python, FastAPI, PostgreSQL, AWS EKS, ArgoCD]
@@ -38,9 +38,9 @@ toc_label: "페이지 목차"
 
 ## Service
 
-**볼래말래**는 사용자가 “직장 상사와 관련된 영화”, “겨울밤 분위기의 영화”처럼 원하는 맥락을 자연어로 입력하면 후보 영화와 추천 이유를 함께 보여주는 AI 영화 추천 서비스입니다. 장르 필터만으로 담기 어려운 **정서·상황·서사 맥락**을 서비스 입력으로 다루는 것이 핵심 과제였습니다.
+**볼래?말래!**는 사용자가 “직장 상사와 관련된 영화”, “겨울밤 분위기의 영화”처럼 원하는 맥락을 자연어로 입력하면 후보 영화와 추천 이유를 함께 보여주는 AI 영화 추천 서비스입니다. 장르 필터만으로 담기 어려운 **정서·상황·서사 맥락**을 서비스 입력으로 다루는 것이 핵심 과제였습니다.
 
-![자연어 입력, 추천 이유, 추천 영화가 이어지는 볼래말래 서비스 화면](/assets/images/project/bolrea-malrea/recommendation-result.png)
+![자연어 입력, 추천 이유, 추천 영화가 이어지는 볼래?말래! 서비스 화면](/assets/images/project/bolrea-malrea/recommendation-result.png)
 
 ## Problem → Contribution
 

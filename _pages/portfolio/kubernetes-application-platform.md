@@ -30,6 +30,8 @@ toc_sticky: true
 toc_label: "페이지 목차"
 ---
 
+<p><a class="btn btn--primary" href="http://portal.la-coruna.xyz/" target="_blank" rel="noopener noreferrer">플랫폼 체험하기 <span aria-hidden="true">↗</span><span class="screen-reader-text"> (새 탭에서 열림)</span></a></p>
+
 ## Project Overview
 
 **개발자는 애플리케이션 실행 의도만 입력하고, 플랫폼은 Kubernetes 리소스 구성·운영 규칙·상태 진단을 책임하도록 만든 셀프서비스 배포·운영 플랫폼입니다.**

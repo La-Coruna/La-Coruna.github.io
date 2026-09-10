@@ -1,6 +1,6 @@
 ---
-title: "Enterprise Knowledge Copilot"
-period: "2026.09"
+title: "사내 지식 검색 코파일럿"
+period: "2026.08 ~ 2026.09"
 type: "개인 프로젝트"
 tech: [Python, FastAPI, PostgreSQL, pgvector, OpenAI, pytest, Docker Compose]
 layout: portfolio-project
@@ -8,7 +8,7 @@ permalink: /portfolio/enterprise-knowledge-copilot/
 description: "기업 문서에서 근거를 찾아 답변하는 RAG 시스템을 구현하고, 검색 품질을 측정하며 개선했습니다."
 portfolio: true
 portfolio_project: true
-portfolio_order: 1
+portfolio_order: 3
 portfolio_area: "RAG · SEARCH QUALITY"
 portfolio_focus: "문서 생명주기 관리 · Lexical 검색 원인 분석 · 고정 평가셋 기반 통제 실험"
 card_tech: [Python, FastAPI, PostgreSQL, pgvector]
